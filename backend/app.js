@@ -8,7 +8,12 @@ const port = 3000
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-app.listen(port, () =>{
+const server = app.listen(port, () =>{
     setupDb()
     console.log(`JAC backend listening on port ${port}!`)
 })
+
+module.exports = {
+    app: app,
+    server: server
+}

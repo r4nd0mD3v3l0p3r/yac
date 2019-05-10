@@ -4,10 +4,8 @@ const usersDb = new Datastore()
 const chatRooms = new Datastore()
 
 export const setupDb = async() => {
-    console.log('setting up db')
     await setupUsers()
     await setupRooms()
-    console.log('db setup done')
 }
 
 export const checkCredentials = async(user, password) => {
