@@ -3,17 +3,23 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --exec babel-node ./app.js"
+    "start": "nodemon --exec babel-node ./app.js",
+    "test": "./node_modules/.bin/mocha --watch --require @babel/polyfill --require @babel/register"
   },
   "dependencies": {
     "@babel/core": "7.4.4",
     "@babel/node": "7.2.2",
+    "@babel/polyfill": "7.4.4",
     "@babel/preset-env": "7.4.4",
+    "@babel/register": "7.4.4",
+    "body-parser": "1.19.0",
+    "chai": "4.2.0",
     "cookie-parser": "1.4.4",
     "debug": "2.6.9",
     "express": "4.16.1",
+    "mocha": "6.1.4",
     "morgan": "1.9.1",
-    "nedb": "^1.8.0",
+    "nedb-async-await": "0.1.2",
     "nodemon": "1.19.0"
   }
 }
