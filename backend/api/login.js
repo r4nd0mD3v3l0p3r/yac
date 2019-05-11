@@ -1,14 +1,15 @@
-import express from 'express'
-import { checkCredentials } from '../dbManager'
+import { checkCredentials, changeStatus } from '../dbManager'
 
-const router = express.Router()
+export const mapLoginRoutes = (app) => {
+    app.post('/login', async (req, res) => {
+        const { user, password } = req.body
+        const validCredentials = await checkCredentials(user, password)
 
-router.post('/login', async (req, res) => {
-    const { user, password } = req.body
-    const validCredentials = await checkCredentials(user, password)
+        if (!validCredentials)
+            res.status(404).send()
 
-    if (!validCredentials)
-        res.status(404).send()
+        await changeStatus(user, true)
 
-
-})
+        return res.status(200).send()
+    })
+}

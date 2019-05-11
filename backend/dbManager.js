@@ -14,8 +14,16 @@ export const checkCredentials = async(user, password) => {
    return result !== null
 }
 
+export const changeStatus = async (user, isOnline) => {
+    await usersDb.update({ name: user}, { $set : {online: isOnline} })
+}
+
+export const findUser = async(user) =>{
+    return await usersDb.findOne({name : user})
+}
+
 const setupUsers = async() => {
-    usersDb.insert([{ name: 'Dana Scully', password: 'Dana', online: false},
+    await usersDb.insert([{ name: 'Dana Scully', password: 'Dana', online: false},
                     { name: 'Fox Mulder', password: 'Fox', online: false},
                     { name: 'Penny', password: 'Penny', online: false},
                     { name: 'Sheldon Cooper', password: 'Sheldon', online: false}
@@ -23,7 +31,7 @@ const setupUsers = async() => {
 }
 
 const setupRooms = async() => {
-    chatRooms.insert([{name: 'Sports', loggedUsers: [], messages: []}, 
+    await chatRooms.insert([{name: 'Sports', loggedUsers: [], messages: []}, 
                       {name: 'Music', loggedUsers: [], messages: []},
                       {name: 'Weather', loggedUsers: [], messages: []}])
 
