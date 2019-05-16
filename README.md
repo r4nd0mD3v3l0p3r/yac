@@ -1,15 +1,12 @@
 # yac
 Yet Another Chat
 
-BACKEND:
-the backend project can be found in the /backend folder
+##BACKEND
+located in the /backend folder
 npm start to launch it
 npm test to launch tests
 
-FRONTEND:
-coming soon
-
-BACKEND TECHNOLOGIES AND TOOLS:
+###Technologies
 Node.Js
 ExpressJs
 NeDB (In-Memory db with mongo-like API)
@@ -17,3 +14,15 @@ Mocha
 Chai
 Nodemon
 Babel
+
+##FRONTEND
+located in the /frontend folder
+npm start to launch it
+npm test to launch tests
+
+###Technologies
+React
+Redux
+Redux-Saga
+ImmutableJs
+MaterialUI
