@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import configureStore from './configureStore'
+import store from './store'
 import { CookiesProvider } from 'react-cookie'
 import { Route, Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -12,7 +12,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { createMuiTheme } from '@material-ui/core/styles'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 
-const store = configureStore()
 const theme = createMuiTheme({
   palette: {
     type: 'dark',

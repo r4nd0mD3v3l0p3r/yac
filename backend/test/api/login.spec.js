@@ -21,9 +21,10 @@ describe('login', () =>{
         expect(response.status).to.equal(404)
     })
     
-    it('should return 200 for existing user', async () =>{
+    it('should return 200 for existing user and token is present', async () =>{
         const response = await requester.post('/login').send({user : 'Dana Scully', password: 'Dana'})
         expect(response.status).to.equal(200)
+        expect(response.body.token).not.to.be.empty
     })
 })
 

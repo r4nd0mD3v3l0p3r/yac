@@ -10,6 +10,7 @@ import MenuAppBar from './MenuAppBar'
 import compose from 'recompose/compose'
 import { withCookies } from 'react-cookie'
 import * as Constants from '../Constants'
+import { loginRequest } from '../actions/actions'
 
 const classes = theme => ({
     container: {
@@ -56,7 +57,6 @@ const classes = theme => ({
     },
 })
 
-
 class Login extends Component {
 
     state =
@@ -73,16 +73,16 @@ class Login extends Component {
         const { name, password } = this.state
         const { dispatch } = this.props
 
-        //TODO dispatch login
+        dispatch(loginRequest({ user: name, password }))
     }
 
     render() {
-        const { invalidCredentials, cookies } = this.props
+        const { invalidCredentials, cookies, loggedIn } = this.props
         const { name, password } = this.state
         let content
         const loginCookie = cookies.get(Constants.LOGIN_COOKIE)
-        const logged = loginCookie !== undefined
-        if (!logged) {
+
+        if (!loggedIn) {
             content = (
                 <Grid
                     container
@@ -149,14 +149,11 @@ Login.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { store } = state
-    const { isFetching, invalidCredentials } = store.login || {
-        isFetching: false,
-        invalidCredentials: false
-    }
+    const loggedIn = state.getIn(['store', 'user', 'loggedIn'])
+    const invalidCredentials = state.getIn(['store', 'user', 'invalidCredentials'])
 
     return {
-        isFetching, invalidCredentials
+        loggedIn, invalidCredentials
     }
 }
 

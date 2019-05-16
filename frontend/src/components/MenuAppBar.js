@@ -22,7 +22,6 @@ import Button from '@material-ui/core/Button'
 import history from './History'
 import { Helmet } from 'react-helmet'
 import compose from 'recompose/compose'
-import * as Constants from '../Constants'
 import { withCookies } from 'react-cookie'
 
 const drawerWidth = 240;
@@ -106,11 +105,10 @@ class MenuAppBar extends React.Component {
     }
 
     render() {
-        const { classes, title, cookies } = this.props
+        const { classes, title, loggedIn } = this.props
         let button
-        const logged = cookies.get(Constants.LOGIN_COOKIE) !== undefined
 
-        if (logged) {
+        if (loggedIn) {
             button = (
                 <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
             )
@@ -134,7 +132,7 @@ class MenuAppBar extends React.Component {
                     })}
                 >
                     <Toolbar disableGutters={!open}>
-                        {logged && <IconButton
+                        {loggedIn && <IconButton
                             color="inherit"
                             aria-label="Open drawer"
                             onClick={this.handleDrawerOpen}
@@ -185,10 +183,9 @@ class MenuAppBar extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { store } = state
-    const { wrongAuthToken } = store.login || { wrongAuthToken: false }
+    const loggedIn  = state.getIn(['store', 'user', 'loggedIn'])
 
-    return { wrongAuthToken }
+    return { loggedIn }
 }
 
 MenuAppBar.propTypes = {
@@ -201,4 +198,4 @@ MenuAppBar.defaultProps = {
     title: 'YAC - Yet Another Chat'
 }
 
-export default compose(withStyles(styles, { name: 'Login' }), withCookies, connect(mapStateToProps, null))(MenuAppBar);
+export default compose(withStyles(styles, { name: 'Login' }), withCookies, connect(mapStateToProps, null))(MenuAppBar)
