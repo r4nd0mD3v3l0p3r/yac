@@ -1,12 +1,12 @@
 # yac
 Yet Another Chat
 
-##BACKEND
+## BACKEND
 located in the /backend folder
 npm start to launch it
 npm test to launch tests
 
-###Technologies
+### Technologies
 Node.Js
 ExpressJs
 NeDB (In-Memory db with mongo-like API)
@@ -15,12 +15,12 @@ Chai
 Nodemon
 Babel
 
-##FRONTEND
+## FRONTEND
 located in the /frontend folder
 npm start to launch it
 npm test to launch tests
 
-###Technologies
+### Technologies
 React
 Redux
 Redux-Saga
