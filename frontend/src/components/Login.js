@@ -90,7 +90,7 @@ class Login extends Component {
                     justify="flex-start"
                     alignItems="center"
                 >
-                    <Typography component="h3" variant="h3">
+                    <Typography variant="h3">
                         Welcome. Please Login
                         </Typography>
                     <TextField
@@ -112,7 +112,7 @@ class Login extends Component {
                         name="password"
                         onChange={this.handleChange}
                     />
-                    {invalidCredentials && <span component="h5" variant="h5" color="red">
+                    {invalidCredentials && <span variant="headline" color="red">
                         Invalid Credentials
                     </span>}
                     <Button variant="contained" className={classes.loginButton} onClick={this.handleLogin}>
@@ -128,7 +128,7 @@ class Login extends Component {
                     justify="flex-start"
                     alignItems="center"
                 >
-                    <Typography component="h3" variant="h3">
+                    <Typography variant="h3">
                         Welcome back {loginCookie.name}
                     </Typography>
                 </Grid>
@@ -149,8 +149,8 @@ Login.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const loggedIn = state.getIn(['store', 'user', 'loggedIn'])
-    const invalidCredentials = state.getIn(['store', 'user', 'invalidCredentials'])
+    const loggedIn = state.getIn(['user', 'loggedIn'])
+    const invalidCredentials = state.getIn(['user', 'invalidCredentials'])
 
     return {
         loggedIn, invalidCredentials

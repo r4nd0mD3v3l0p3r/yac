@@ -24,7 +24,7 @@ import { Helmet } from 'react-helmet'
 import compose from 'recompose/compose'
 import { withCookies } from 'react-cookie'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const styles = theme => ({
     root: {
@@ -88,7 +88,6 @@ class MenuAppBar extends React.Component {
     state = { open: false }
 
     handleLogout = () => {
-        const { dispatch } = this.props
 
         //TODO: dispatch logout request
         localStorage.removeItem('user')
@@ -183,7 +182,7 @@ class MenuAppBar extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const loggedIn  = state.getIn(['store', 'user', 'loggedIn'])
+    const loggedIn  = state.getIn(['user', 'loggedIn'])
 
     return { loggedIn }
 }
