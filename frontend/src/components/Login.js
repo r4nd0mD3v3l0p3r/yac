@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography'
 import MenuAppBar from './MenuAppBar'
 import compose from 'recompose/compose'
 import { withCookies } from 'react-cookie'
-import * as Constants from '../Constants'
 import { loginRequest } from '../actions/actions'
+import Paper from '@material-ui/core/Paper';
 
 const classes = theme => ({
     container: {
@@ -77,10 +77,9 @@ class Login extends Component {
     }
 
     render() {
-        const { invalidCredentials, cookies, loggedIn } = this.props
+        const { invalidCredentials, loggedIn, fetching } = this.props
         const { name, password } = this.state
         let content
-        const loginCookie = cookies.get(Constants.LOGIN_COOKIE)
 
         if (!loggedIn) {
             content = (
@@ -92,7 +91,7 @@ class Login extends Component {
                 >
                     <Typography variant="h3">
                         Welcome. Please Login
-                        </Typography>
+                    </Typography>
                     <TextField
                         id="name"
                         label="Name"
@@ -112,10 +111,10 @@ class Login extends Component {
                         name="password"
                         onChange={this.handleChange}
                     />
-                    {invalidCredentials && <span variant="headline" color="red">
+                    {invalidCredentials && <Typography variant="h6" color="secondary">
                         Invalid Credentials
-                    </span>}
-                    <Button variant="contained" className={classes.loginButton} onClick={this.handleLogin}>
+                    </Typography>}
+                    <Button variant="contained" className={classes.loginButton} onClick={this.handleLogin} disabled={fetching}>
                         Login
                     </Button>
                 </Grid>)
@@ -129,7 +128,7 @@ class Login extends Component {
                     alignItems="center"
                 >
                     <Typography variant="h3">
-                        Welcome back {loginCookie.name}
+                        Welcome back!
                     </Typography>
                 </Grid>
             )
@@ -139,7 +138,6 @@ class Login extends Component {
                 {content}
             </MenuAppBar>
         )
-
     }
 }
 
@@ -150,10 +148,11 @@ Login.propTypes = {
 
 function mapStateToProps(state) {
     const loggedIn = state.getIn(['user', 'loggedIn'])
+    const fetching = state.getIn(['user', 'fetching'])
     const invalidCredentials = state.getIn(['user', 'invalidCredentials'])
 
     return {
-        loggedIn, invalidCredentials
+        loggedIn, invalidCredentials, fetching
     }
 }
 
