@@ -20,6 +20,12 @@ export default (state = initialState, action) => {
             return state.merge({ 'fetching': false, 'invalidCredentials': false, 'loggedIn': true })
         case Actions.LOGIN_KO:
             return state.merge({ 'fetching': false, 'invalidCredentials': true, 'loggedIn': false })
+        case Actions.LOGOUT_REQUEST:
+            return state.merge({ 'fetching': true, 'invalidCredentials': false, 'loggedIn': true })
+        case Actions.LOGOUT_OK:
+            return state.merge({ 'fetching': false, 'invalidCredentials': false, 'loggedIn': false })
+        case Actions.LOGOUT_KO:
+            return state.merge({ 'fetching': false, 'invalidCredentials': false, 'loggedIn': true })
         default:
             return state
     }

@@ -1,6 +1,6 @@
-import { checkCredentials, changeStatus } from '../dbManager'
+import { checkCredentials, changeStatus, findUser } from '../dbManager'
 
-const token = '1911'
+const authenticationToken = '1911'
 
 export const mapLoginRoutes = (app) => {
     app.post('/login', async (req, res) => {
@@ -12,16 +12,17 @@ export const mapLoginRoutes = (app) => {
 
         await changeStatus(user, true)
 
-        res.json({ token })
-        
+        res.json({ token: authenticationToken })
+
         return res.status(200)
     })
 
     app.post('/logout', async (req, res) => {
-        const { user, password } = req.body
-        const validCredentials = await checkCredentials(user, password)
+        const { user, token } = req.body
 
-        if (!validCredentials)
+        const registeredUser = await findUser(user)
+
+        if (authenticationToken !== token || registeredUser === null)
             res.status(404).send()
 
         await changeStatus(user, false)

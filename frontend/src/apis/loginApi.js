@@ -21,3 +21,22 @@ export const login = async (user, password) => {
         return null
     }
 }
+
+export const logout = async (user, token) => {
+    try {
+        const response = await endpoint.post('/logout', { user, token })
+
+        if (response.status === 200) {
+            const cookies = new Cookies()
+
+            cookies.remove (Constants.LOGIN_COOKIE)
+
+            return true
+        }
+
+        return false
+    }
+    catch (e) {
+        return false
+    }
+}

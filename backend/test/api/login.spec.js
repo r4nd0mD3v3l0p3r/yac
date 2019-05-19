@@ -29,13 +29,18 @@ describe('login', () =>{
 })
 
 describe('logout', () =>{
-    it('should return 404 for unexisting user', async () =>{
-        const response = await requester.post('/logout').send({user : 'Johh Doe', password: 'Doe'})
+    it('should return 404 for invalid token', async () =>{
+        const response = await requester.post('/logout').send({user : 'Johh Doe', token: 'aToken'})
+        expect(response.status).to.equal(404)
+    })
+
+    it('should return 404 for non-existing user', async () =>{
+        const response = await requester.post('/logout').send({user : 'Johh Doe', token: 'aToken'})
         expect(response.status).to.equal(404)
     })
     
-    it('should return 200 for existing user', async () =>{
-        const response = await requester.post('/logout').send({user : 'Dana Scully', password: 'Dana'})
+    it('should return 200 for existing user with valid token', async () =>{
+        const response = await requester.post('/logout').send({user : 'Dana Scully', token: '1911'})
         expect(response.status).to.equal(200)
     })
 })

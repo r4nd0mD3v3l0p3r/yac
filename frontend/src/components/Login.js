@@ -10,7 +10,6 @@ import MenuAppBar from './MenuAppBar'
 import compose from 'recompose/compose'
 import { withCookies } from 'react-cookie'
 import { loginRequest } from '../actions/actions'
-import Paper from '@material-ui/core/Paper';
 
 const classes = theme => ({
     container: {

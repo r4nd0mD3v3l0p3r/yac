@@ -8,19 +8,22 @@ export function* loginFlow() {
 
         const { user, password } = data
 
-        let token = null
+        const token = yield call(LoginApi.login, user, password)
 
-        try {
-            token = yield call(LoginApi.login, user, password)
-        }
-        catch (e) {
-            yield put(Actions.loginKo())
-        }
-
-        if (token !== null)
+        if (token !== null) {
             yield put(Actions.loginOk(token))
-        else
-            yield put(Actions.loginKo())
 
+            yield take(Actions.LOGOUT_REQUEST)
+
+            const logoutOk = yield call(LoginApi.logout, user, token)
+
+            if (logoutOk)
+                yield put(Actions.logoutOk())
+            else
+                yield put(Actions.logoutKo())
+        }
+        else {
+            yield put(Actions.loginKo())
+        }
     }
 }

@@ -23,6 +23,7 @@ import history from './History'
 import { Helmet } from 'react-helmet'
 import compose from 'recompose/compose'
 import { withCookies } from 'react-cookie'
+import { logoutRequest } from '../actions/actions'
 
 const drawerWidth = 240
 
@@ -88,10 +89,9 @@ class MenuAppBar extends React.Component {
     state = { open: false }
 
     handleLogout = () => {
+        const { dispatch } = this.props
 
-        //TODO: dispatch logout request
-        localStorage.removeItem('user')
-
+        dispatch(logoutRequest())
         history.push("/")
     }
 
@@ -104,16 +104,16 @@ class MenuAppBar extends React.Component {
     }
 
     render() {
-        const { classes, title, loggedIn } = this.props
+        const { classes, title, loggedIn, fetching } = this.props
         let button
 
         if (loggedIn) {
             button = (
-                <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
+                <Button color="inherit" onClick={this.handleLogout} disabled={fetching}>Logout</Button>
             )
         } else {
             button = (
-                <Button color="inherit" component={Link} to="/login">Login</Button>
+                <Button color="inherit" component={Link} to="/login" disabled={fetching}>Login</Button>
             )
         }
         const { open } = this.state;
@@ -182,9 +182,10 @@ class MenuAppBar extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const loggedIn  = state.getIn(['user', 'loggedIn'])
+    const loggedIn = state.getIn(['user', 'loggedIn'])
+    const fetching = state.getIn(['user', 'fetching'])
 
-    return { loggedIn }
+    return { loggedIn, fetching }
 }
 
 MenuAppBar.propTypes = {
