@@ -23,6 +23,8 @@ Nodemon
 
 Babel
 
+Socket.IO
+
 ## FRONTEND
 located in the /frontend folder
 
@@ -40,3 +42,5 @@ Redux-Saga
 ImmutableJs
 
 MaterialUI
+
+Socket.IO
