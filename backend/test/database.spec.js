@@ -1,11 +1,10 @@
-import { setupDb, checkCredentials, changeStatus, findUser } from '../dbManager'
+import { setupDb, checkCredentials, changeStatus, findUser } from '../database'
 import { expect } from 'chai'
 
-beforeEach('Setting up the db', () => {
-    setupDb()
-})
-
 describe('dbManager', () => {
+    beforeEach('Setting up the db', () => {
+        setupDb()
+    })
     describe('#checkCredentials', () => {
         it('should return true for existing user', async () => {
             const userFound = await checkCredentials('Dana Scully', 'Dana')

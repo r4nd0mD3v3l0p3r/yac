@@ -1,4 +1,4 @@
-import { checkCredentials, changeStatus, findUser } from '../dbManager'
+import { checkCredentials, changeStatus, findUser } from '../database'
 
 const authenticationToken = '1911'
 

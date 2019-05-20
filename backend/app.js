@@ -1,7 +1,9 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { setupDb } from './dbManager'
+import { setupDb } from './database'
 import { mapLoginRoutes } from './api/login'
+import http from 'http'
+import { setup as setupChat } from './chat'
 
 const app = express()
 const port = 3001
@@ -15,12 +17,17 @@ app.use((req, res, next) => {
     next()
 })
 
-const server = app.listen(port, () => {
+const server = http.createServer(app)
+
+server.listen(port, () => {
     setupDb()
     mapLoginRoutes(app)
 })
 
+setupChat(server)
+
 module.exports = {
     app: app,
-    server: server
+    server: server,
+    port: port
 }

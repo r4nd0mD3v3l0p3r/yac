@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import chaiHttp from 'chai-http'
 import { app, server } from '../../app'
 
-chai.use(chaiHttp);
+chai.use(chaiHttp)
 let requester
 
 before(() => {
