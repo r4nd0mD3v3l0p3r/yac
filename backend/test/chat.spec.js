@@ -27,21 +27,25 @@ describe('Chat', () => {
         server.close()
     })
 
-    describe('A client connects to a room', () => {
-        it('should notify other users in the room', () => {
+    describe('A user connects to a room', () => {
+        it('should notify other users in the room', function (done) {
+
             const firstClient = connectUser()
 
             firstClient.on('connect', function () {
                 firstClient.emit('join', { user: 'firstClient', room })
+
+                firstClient.on('system-message', (msg) => {
+                    expect(msg).to.eql({ message: 'secondClient has joined the room!', room })
+                    done()
+                })
             })
 
             const secondClient = connectUser()
 
-            firstClient.on('connect', function () {
-                firstClient.emit('join', { user: 'firstClient', room })
-                firstClient.on('message', (msg) => {
-                    expect(msg).to.equal('firstClient has joined the room!')
-                })
+            
+            secondClient.on('connect', function () {
+                secondClient.emit('join', { user: 'secondClient', room })
             })
 
             firstClient.disconnect()

@@ -19,12 +19,13 @@ app.use((req, res, next) => {
 
 const server = http.createServer(app)
 
+setupChat(server)
+
 server.listen(port, () => {
     setupDb()
     mapLoginRoutes(app)
 })
 
-setupChat(server)
 
 module.exports = {
     app: app,
