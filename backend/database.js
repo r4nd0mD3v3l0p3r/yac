@@ -35,7 +35,7 @@ export const usersInRoom = async (roomToFind) => {
 }
 
 export const rooms = async () => {
-    return chatRooms.find()
+    return await chatRooms.find({})
 }
 
 const setupUsers = async () => {

@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
+import { fetchRoomsRequest } from '../actions/actions'
 
 const classes = theme => ({
     root: {
@@ -34,17 +35,19 @@ class Chat extends Component {
     }
 
 
-    componentDidMount()
-    {
-        
+    componentDidMount() {
+        const { dispatch } = this.props
+
+        dispatch(fetchRoomsRequest())
     }
 
     render() {
         const { room } = this.state
+        const { rooms } = this.props
 
         return (
             <MenuAppBar>
-                <Grid container spacing={3}>
+                <Grid container spacing={8}>
                     <Grid item xs={12}>
                         <FormControl className={classes.formControl}>
                             <Select
@@ -57,8 +60,7 @@ class Chat extends Component {
                                 <MenuItem value="" disabled>
                                     Select a room
                                 </MenuItem>
-                                <MenuItem value={10}>Sport</MenuItem>
-                                <MenuItem value={20}>Music</MenuItem>
+                                {rooms.map(x => (<MenuItem value={x.name}>{x.name}</MenuItem>))}
                             </Select>
                             <FormHelperText>Selected Room</FormHelperText>
                         </FormControl>
@@ -75,12 +77,10 @@ Chat.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const loggedIn = state.getIn(['user', 'loggedIn'])
-    const fetching = state.getIn(['user', 'fetching'])
-    const invalidCredentials = state.getIn(['user', 'invalidCredentials'])
+    const rooms = state.getIn(['chat', 'rooms'])
 
     return {
-        loggedIn, invalidCredentials, fetching
+        rooms
     }
 }
 

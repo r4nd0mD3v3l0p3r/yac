@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux-immutable'
 import user from './userReducer'
+import chat from './chatReducer'
 
 const rootReducer = combineReducers({
-    user
+    user, chat
 })
 
 export default rootReducer
