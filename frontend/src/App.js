@@ -8,6 +8,7 @@ import { Switch } from 'react-router'
 import history from './components/History'
 import Home from './components/Home'
 import Login from './components/Login'
+import Chat from './components/Chat'
 import { BrowserRouter } from 'react-router-dom'
 import { createMuiTheme } from '@material-ui/core/styles'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
@@ -31,6 +32,7 @@ function App() {
               <Switch>
                 <Route exact path='/' component={Home} />
                 <Route exact path='/login' component={Login} />
+                <Route exact path='/chat' component={Chat} />
               </Switch>
             </Router>
           </Provider>

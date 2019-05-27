@@ -34,6 +34,10 @@ export const usersInRoom = async (roomToFind) => {
     return room.loggedUsers
 }
 
+export const rooms = async () => {
+    return chatRooms.find()
+}
+
 const setupUsers = async () => {
     await usersDb.insert([{ name: 'Dana Scully', password: 'Dana', online: false },
     { name: 'Fox Mulder', password: 'Fox', online: false },

@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { setupDb } from './database'
 import { mapLoginRoutes } from './api/login'
+import { mapChatRoutes } from './api/chat'
 import http from 'http'
 import { setup as setupChat } from './chat'
 
@@ -24,6 +25,7 @@ setupChat(server)
 server.listen(port, () => {
     setupDb()
     mapLoginRoutes(app)
+    mapChatRoutes(app)
 })
 
 

@@ -160,11 +160,11 @@ class MenuAppBar extends React.Component {
                     </div>
                     <Divider />
                     <List>
-                        <ListItem button key="Users Page" component={Link} to="/users">
+                        <ListItem button key="Chat" component={Link} to="/chat">
                             <ListItemIcon>
                                 <GroupIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Users Page" />
+                            <ListItemText primary="Chat" />
                         </ListItem>
                     </List>
                 </Drawer>
