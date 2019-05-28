@@ -4,7 +4,9 @@ import { fromJS } from 'immutable'
 const initialState = fromJS(
     {
         rooms: [],
-        fetching: false
+        fetching: false,
+        onlineUsers: [],
+        messages: []
     }
 )
 
