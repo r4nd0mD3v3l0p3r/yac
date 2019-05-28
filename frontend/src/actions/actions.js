@@ -7,6 +7,14 @@ export const LOGOUT_KO = 'LOGOUT_KO'
 export const FETCH_ROOMS_REQUEST = 'FETCH_ROOMS_REQUEST'
 export const FETCH_ROOMS_OK = 'FETCH_ROOMS_OK'
 export const FETCH_ROOMS_KO = 'FETCH_ROOMS_KO'
+export const JOIN_ROOM_REQUEST = 'JOIN_ROOM_REQUEST'
+export const JOIN_ROOM_OK = 'JOIN_ROOM_OK'
+export const JOIN_ROOM_KO = 'JOIN_ROOM_KO'
+export const LEAVE_ROOM_REQUEST = 'LEAVE_ROOM_REQUEST'
+export const LEAVE_ROOM_OK = 'LEAVE_ROOM_OK'
+export const LEAVE_ROOM_KO = 'LEAVE_ROOM_KO'
+export const SEND_MESSAGE = 'SEND_MESSAGE'
+export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE'
 
 export const loginRequest = (data) => {
     return { type: LOGIN_REQUEST, data }
