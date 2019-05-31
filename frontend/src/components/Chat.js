@@ -10,7 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import { fetchRoomsRequest } from '../actions/actions'
+import { fetchRoomsRequest, joinRoomRequest, sendMessage } from '../actions/actions'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
@@ -54,13 +54,27 @@ class Chat extends Component {
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
+    }
 
+    handleRoomChange = (event) => {
+        this.handleChange(event)
+
+        const { dispatch, user } = this.props
+
+        dispatch(joinRoomRequest({ room: event.target.value, user: user }))
     }
 
     componentDidMount() {
         const { dispatch } = this.props
 
         dispatch(fetchRoomsRequest())
+    }
+
+    sendMessage = () => {
+        const { message } = this.state
+        const { dispatch } = this.props
+
+        dispatch(sendMessage(message))
     }
 
     render() {
@@ -74,7 +88,7 @@ class Chat extends Component {
                         <FormControl className={classes.formControl}>
                             <Select
                                 value={room}
-                                onChange={this.handleChange}
+                                onChange={this.handleRoomChange}
                                 name="room"
                                 displayEmpty
                                 className={classes.selectEmpty}
@@ -149,7 +163,7 @@ class Chat extends Component {
                                 style={{ flex: 1 }}
                             />
 
-                            <Button variant="contained" className={classes.button}>
+                            <Button variant="contained" className={classes.button} onClick={this.sendMessage}>
                                 Send Message
                             </Button>
                         </Paper>
@@ -169,10 +183,11 @@ function mapStateToProps(state) {
     const rooms = state.getIn(['chat', 'rooms'])
     const onlineUsers = state.getIn(['chat', 'onlineUsers'])
     const messages = state.getIn(['chat', 'messages'])
+    const user = state.getIn(['user', 'user'])
 
     return {
-        rooms, onlineUsers, messages
+        rooms, onlineUsers, messages, user
     }
 }
 
-export default compose(withStyles(classes, { name: 'Chat' }), withCookies, connect(mapStateToProps, null))(Chat)
+export default compose(withStyles(classes, { name: 'Chat' }), withCookies, connect(mapStateToProps))(Chat)

@@ -20,8 +20,8 @@ export const loginRequest = (data) => {
     return { type: LOGIN_REQUEST, data }
 }
 
-export const loginOk = (token) => {
-    return { type: LOGIN_OK, token }
+export const loginOk = ({ token, user }) => {
+    return { type: LOGIN_OK, data: { token, user } }
 }
 
 export const loginKo = (message = '') => {
@@ -50,4 +50,16 @@ export const fetchRoomsOk = (data) => {
 
 export const fetchRoomsKo = (message = '') => {
     return { type: FETCH_ROOMS_KO, message }
+}
+
+export const receiveMessage = (messages) => {
+    return { type: RECEIVE_MESSAGE, messages }
+}
+
+export const joinRoomRequest = (data) => {
+    return { type: JOIN_ROOM_REQUEST, data }
+}
+
+export const sendMessage = (message) => {
+    return {type: SEND_MESSAGE, message}
 }

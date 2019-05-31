@@ -13,8 +13,15 @@ const joinRoom = async (socket) => {
         const { user, room } = data
 
         await userLogsIn(user, room)
+
         socket.join(room)
-        socket.in(room).emit('system-message', { message: `${user} has joined the room!`, room })
+        socket.to(room).emit('messages', { messages: [{ text: `${user} has joined the room!`, author: '' }] })
+    })
+
+    socket.on('messages', (data) => {
+        const { messages, room } = data
+
+        socket.to(room).emit('messages', { messages })
     })
 
     socket.on('disconnect', () => {

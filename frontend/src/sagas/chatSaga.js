@@ -1,7 +1,7 @@
-import { take, call, put } from 'redux-saga/effects'
+import { take, call, put, fork } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as Actions from '../actions/actions'
-import * as chatApi from '../apis/chatApi'
+import * as ChatApi from '../apis/chatApi'
 import io from 'socket.io-client'
 
 const endpoint = 'http://localhost:3001/chat'
@@ -9,7 +9,7 @@ const endpoint = 'http://localhost:3001/chat'
 export function* fetchRooms() {
     yield take(Actions.FETCH_ROOMS_REQUEST)
 
-    const rooms = yield call(chatApi.fetchRooms)
+    const rooms = yield call(ChatApi.fetchRooms)
 
     if (rooms !== null)
         yield put(Actions.fetchRoomsOk(rooms))
@@ -19,7 +19,7 @@ export function* fetchRooms() {
 
 export function* joinRoom() {
     while (true) {
-        const data = yield take(Actions.JOIN_ROOM_REQUEST)
+        const { data } = yield take(Actions.JOIN_ROOM_REQUEST)
 
         const { room, user } = data;
 
@@ -27,25 +27,20 @@ export function* joinRoom() {
 
         const socketChannel = yield call(createSocketChannel, socket, room, user)
 
-        while (true) {
-            try {
-                const payload = yield take(socketChannel)
-            }
-            catch (e) {
+        yield fork(messageReceiver, socketChannel)
 
-            }
-        }
+        yield fork(messageSender, socket, user, room)
     }
 }
 
-function createSocketChannel(socket, room, user) {
+export function createSocketChannel(socket, room, user) {
     return eventChannel(emit => {
         const joinRoom = (event) => {
-            socket.emit('join', room)
+            socket.emit('join', { room, user })
         }
 
-        const incomingMessageHandler = (event) => {
-            emit(event.payload)
+        const incomingMessagesHandler = (event) => {
+            emit(event.messages)
         }
 
         const errorHandler = (errorEvent) => {
@@ -53,14 +48,35 @@ function createSocketChannel(socket, room, user) {
         }
 
         socket.on('connect', joinRoom)
-        socket.on('message', incomingMessageHandler)
+        socket.on('messages', incomingMessagesHandler)
         socket.on('error', errorHandler)
 
         const unsubscribe = () => {
             socket.off('join', joinRoom)
-            socket.off('message', incomingMessageHandler)
+            socket.off('messages', incomingMessagesHandler)
+            socket.off('error', errorHandler)
         }
 
         return unsubscribe
     })
+}
+
+function* messageReceiver(socketChannel) {
+    while (true) {
+        try {
+            const messages = yield take(socketChannel)
+
+            yield put(Actions.receiveMessage(messages))
+        }
+        catch (e) {
+        }
+    }
+}
+
+function* messageSender(socket, user, room) {
+    while (true) {
+        const { message } = yield take(Actions.SEND_MESSAGE)
+
+        socket.emit('messages', { room, messages: [{ text: message, author: user }] })
+    }
 }

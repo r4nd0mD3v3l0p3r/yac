@@ -11,7 +11,7 @@ export function* loginFlow() {
         const token = yield call(LoginApi.login, user, password)
 
         if (token !== null) {
-            yield put(Actions.loginOk(token))
+            yield put(Actions.loginOk({ token, user }))
 
             yield take(Actions.LOGOUT_REQUEST)
 

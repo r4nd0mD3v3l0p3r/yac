@@ -11,6 +11,7 @@ export const login = async (user, password) => {
             const cookies = new Cookies()
 
             cookies.set(Constants.LOGIN_COOKIE, JSON.stringify(token), { path: '/' })
+            cookies.set(Constants.USER_COOKIE, JSON.stringify(user), { path: '/' })
 
             return token
         }
