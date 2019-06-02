@@ -5,26 +5,31 @@ export const setup = async (server) => {
     const io = socketIo(server)
     const chat = io.of('/chat')
 
-    chat.on('connection', async (socket) => await joinRoom(socket))
+    chat.on('connection', async (socket) => await joinRoom(socket, chat))
 }
 
-const joinRoom = async (socket) => {
+const joinRoom = async (socket, chat) => {
     socket.on('join', async (data) => {
         const { user, room } = data
 
         await userLogsIn(user, room)
 
         socket.join(room)
-        socket.to(room).emit('messages', { messages: [{ text: `${user} has joined the room!`, author: '' }] })
+        socket.in(room).emit('message', { message: { text: `${user} has joined the room!`, author: '' } })
     })
 
-    socket.on('messages', (data) => {
-        const { messages, room } = data
+    socket.on('message', (data) => {
+        const { message, room } = data
 
-        socket.to(room).emit('messages', { messages })
+        chat.in(room).emit('message', { message })
+    })
+
+    socket.on('leave', async (data) => {
+        const { user, room } = data
+
+        socket.in(room).emit('message', { room, message: { text: `${user} has left the room`, author: '' } })
     })
 
     socket.on('disconnect', () => {
-
     })
 }

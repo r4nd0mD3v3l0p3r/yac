@@ -10,7 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import { fetchRoomsRequest, joinRoomRequest, sendMessage } from '../actions/actions'
+import { fetchRoomsRequest, joinRoomRequest, sendMessage, leaveRoomRequest } from '../actions/actions'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
@@ -35,12 +35,12 @@ const classes = theme => ({
         minHeight: 300
     },
     paper: {
-        padding: theme.spacing.unit * 2,
+        padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
     },
     button: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(),
     },
 })
 
@@ -77,13 +77,20 @@ class Chat extends Component {
         dispatch(sendMessage(message))
     }
 
+    leaveRoom = () => {
+        const { dispatch } = this.props
+        dispatch(leaveRoomRequest())
+
+        this.setState({ room: '' })
+    }
+
     render() {
         const { room, message } = this.state
         const { rooms, onlineUsers, messages } = this.props
 
         return (
             <MenuAppBar>
-                <Grid container spacing={24}>
+                <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <FormControl className={classes.formControl}>
                             <Select
@@ -92,6 +99,7 @@ class Chat extends Component {
                                 name="room"
                                 displayEmpty
                                 className={classes.selectEmpty}
+                                disabled={!!room}
                             >
                                 {!room && <MenuItem value="" disabled>
                                     Select a room
@@ -132,11 +140,15 @@ class Chat extends Component {
                                     return (
                                         <ListItem key={index}>
                                             <ListItemText
-                                                primary=''
+                                                primary={message.author}
                                                 secondary={
                                                     <React.Fragment>
-                                                        <Typography component="span" className={classes.inline} color="textPrimary">
-                                                            {message.author}
+                                                        <Typography
+                                                            component="span"
+                                                            variant="body2"
+                                                            className={classes.inline}
+                                                            color="textPrimary"
+                                                        >
                                                         </Typography>
                                                         {message.text}
                                                     </React.Fragment>
@@ -152,24 +164,32 @@ class Chat extends Component {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
-                            <TextField
-                                id="message"
-                                label="Type your message here"
-                                className={classes.textField}
-                                value={message}
-                                name="message"
-                                margin="normal"
-                                onChange={this.handleChange}
-                                style={{ flex: 1 }}
-                            />
-
-                            <Button variant="contained" className={classes.button} onClick={this.sendMessage}>
-                                Send Message
-                            </Button>
+                            <Grid container alignItems="flex-end">
+                                <Grid item xs={8}>
+                                    <TextField
+                                        id="message"
+                                        label="Type your message here"
+                                        className={classes.textField}
+                                        value={message}
+                                        name="message"
+                                        margin="normal"
+                                        onChange={this.handleChange}
+                                        disabled={!room}
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Button className={classes.button} onClick={this.sendMessage} disabled={!room}>
+                                        Send Message
+                                    </Button>
+                                    <Button className={classes.button} onClick={this.leaveRoom} disabled={!room}>
+                                        Leave Room
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </Paper>
                     </Grid>
                 </Grid>
-            </MenuAppBar>
+            </MenuAppBar >
         )
     }
 }

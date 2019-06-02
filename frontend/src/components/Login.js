@@ -17,8 +17,8 @@ const classes = theme => ({
         flexWrap: 'wrap'
     },
     textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
+        marginLeft: theme.spacing(),
+        marginRight: theme.spacing(),
         width: 200,
     },
     dense: {
@@ -28,7 +28,7 @@ const classes = theme => ({
         width: 200,
     },
     button: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(),
     },
     input: {
         display: 'none',
@@ -37,17 +37,17 @@ const classes = theme => ({
         height: 240,
     },
     paper: {
-        padding: theme.spacing.unit * 2,
+        padding: theme.spacing(2),
         height: '100%',
         color: theme.palette.text.secondary,
     },
     control: {
-        padding: theme.spacing.unit * 2,
+        padding: theme.spacing(2),
     },
     root: {
         ...theme.mixins.gutters(),
-        paddingTop: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
         flexGrow: 1
     },
     loginButton: {

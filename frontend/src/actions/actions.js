@@ -12,7 +12,6 @@ export const JOIN_ROOM_OK = 'JOIN_ROOM_OK'
 export const JOIN_ROOM_KO = 'JOIN_ROOM_KO'
 export const LEAVE_ROOM_REQUEST = 'LEAVE_ROOM_REQUEST'
 export const LEAVE_ROOM_OK = 'LEAVE_ROOM_OK'
-export const LEAVE_ROOM_KO = 'LEAVE_ROOM_KO'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE'
 
@@ -52,14 +51,26 @@ export const fetchRoomsKo = (message = '') => {
     return { type: FETCH_ROOMS_KO, message }
 }
 
-export const receiveMessage = (messages) => {
-    return { type: RECEIVE_MESSAGE, messages }
+export const receiveMessage = (message) => {
+    return { type: RECEIVE_MESSAGE, message }
 }
 
 export const joinRoomRequest = (data) => {
     return { type: JOIN_ROOM_REQUEST, data }
 }
 
+export const joinRoomOk = (data) => {
+    return { type: JOIN_ROOM_OK, data }
+}
+
 export const sendMessage = (message) => {
-    return {type: SEND_MESSAGE, message}
+    return { type: SEND_MESSAGE, message }
+}
+
+export const leaveRoomRequest = () => {
+    return { type: LEAVE_ROOM_REQUEST }
+}
+
+export const leaveRoomOk = () => {
+    return { type: LEAVE_ROOM_OK }
 }

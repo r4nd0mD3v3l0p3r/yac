@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
         case Actions.FETCH_ROOMS_KO:
             return state.merge({ 'fetching': false, rooms: [] })
         case Actions.RECEIVE_MESSAGE:
-            return state.update('messages', (messages) => Array.from(messages).concat(action.messages))
+            return state.update('messages', (messages) => Array.from(messages).concat(action.message))
         default:
             return state
     }

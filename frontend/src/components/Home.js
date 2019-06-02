@@ -1,8 +1,8 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import MenuAppBar from './MenuAppBar';
-import { withCookies } from 'react-cookie';
-import compose from 'recompose/compose';
+import React from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import MenuAppBar from './MenuAppBar'
+import { withCookies } from 'react-cookie'
+import compose from 'recompose/compose'
 import Typography from '@material-ui/core/Typography'
 
 const styles = theme => ({

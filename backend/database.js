@@ -34,6 +34,10 @@ export const usersInRoom = async (roomToFind) => {
     return room.loggedUsers
 }
 
+export const onlineUsers = async () => {
+    return await usersDb.find({ online: true })
+}
+
 export const rooms = async () => {
     return await chatRooms.find({})
 }
@@ -47,8 +51,8 @@ const setupUsers = async () => {
 }
 
 const setupRooms = async () => {
-    await chatRooms.insert([{ name: 'Sports', loggedUsers: [], messages: [] },
-    { name: 'Music', loggedUsers: [], messages: [] },
-    { name: 'Weather', loggedUsers: [], messages: [] }])
+    await chatRooms.insert([{ name: 'Sports', loggedUsers: [] },
+    { name: 'Music', loggedUsers: [] },
+    { name: 'Weather', loggedUsers: [] }])
 
 }

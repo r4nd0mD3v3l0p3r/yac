@@ -1,4 +1,4 @@
-import { take, call, put, fork } from 'redux-saga/effects'
+import { take, call, put, fork, cancel } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as Actions from '../actions/actions'
 import * as ChatApi from '../apis/chatApi'
@@ -27,20 +27,29 @@ export function* joinRoom() {
 
         const socketChannel = yield call(createSocketChannel, socket, room, user)
 
-        yield fork(messageReceiver, socketChannel)
+        const receiverTask = yield fork(messageReceiver, socketChannel)
+        const senderTask = yield fork(messageSender, socket, user, room)
 
-        yield fork(messageSender, socket, user, room)
+        yield put(Actions.joinRoomOk(room))
+
+        yield take(Actions.LEAVE_ROOM_REQUEST)
+
+        yield cancel(receiverTask)
+        yield cancel(senderTask)
+        socketChannel.close()
+
+        yield put(Actions.leaveRoomOk())
     }
 }
 
-export function createSocketChannel(socket, room, user) {
+function createSocketChannel(socket, room, user) {
     return eventChannel(emit => {
         const joinRoom = (event) => {
             socket.emit('join', { room, user })
         }
 
-        const incomingMessagesHandler = (event) => {
-            emit(event.messages)
+        const incomingMessageHandler = (event) => {
+            emit(event.message)
         }
 
         const errorHandler = (errorEvent) => {
@@ -48,12 +57,14 @@ export function createSocketChannel(socket, room, user) {
         }
 
         socket.on('connect', joinRoom)
-        socket.on('messages', incomingMessagesHandler)
+        socket.on('message', incomingMessageHandler)
         socket.on('error', errorHandler)
 
         const unsubscribe = () => {
+            socket.emit('leave', { room, user })
+
             socket.off('join', joinRoom)
-            socket.off('messages', incomingMessagesHandler)
+            socket.off('message', incomingMessageHandler)
             socket.off('error', errorHandler)
         }
 
@@ -64,9 +75,9 @@ export function createSocketChannel(socket, room, user) {
 function* messageReceiver(socketChannel) {
     while (true) {
         try {
-            const messages = yield take(socketChannel)
+            const message = yield take(socketChannel)
 
-            yield put(Actions.receiveMessage(messages))
+            yield put(Actions.receiveMessage(message))
         }
         catch (e) {
         }
@@ -77,6 +88,6 @@ function* messageSender(socket, user, room) {
     while (true) {
         const { message } = yield take(Actions.SEND_MESSAGE)
 
-        socket.emit('messages', { room, messages: [{ text: message, author: user }] })
+        socket.emit('message', { room, message: { text: message, author: user } })
     }
 }
