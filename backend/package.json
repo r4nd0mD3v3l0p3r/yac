@@ -17,7 +17,7 @@
     "chai-http": "4.3.0",
     "cookie-parser": "1.4.4",
     "debug": "2.6.9",
-    "express": "4.16.1",
+    "express": "4.17.3",
     "mocha": "6.1.4",
     "morgan": "1.9.1",
     "nedb-async-await": "0.1.2",
