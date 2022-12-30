@@ -18,7 +18,7 @@
     "cookie-parser": "1.4.4",
     "debug": "2.6.9",
     "express": "4.16.1",
-    "mocha": "6.1.4",
+    "mocha": "10.2.0",
     "morgan": "1.9.1",
     "nedb-async-await": "0.1.2",
     "nodemon": "1.19.0",
